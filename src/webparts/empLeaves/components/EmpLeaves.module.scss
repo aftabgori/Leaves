@@ -1,0 +1,172 @@
+@import "~@fluentui/react/dist/sass/References.scss";
+
+.empLeaves {
+  overflow: hidden;
+  padding: 1em;
+  color: "[theme:bodyText, default: #323130]";
+  color: var(--bodyText);
+  &.teams {
+    font-family: $ms-font-family-fallbacks;
+  }
+}
+
+.welcome {
+  text-align: center;
+}
+
+.welcomeImage {
+  width: 100%;
+  max-width: 420px;
+}
+
+.links {
+  a {
+    text-decoration: none;
+    color: "[theme:link, default:#03787c]";
+    color: var(
+      --link
+    ); // note: CSS Custom Properties support is limited to modern browsers only
+
+    &:hover {
+      text-decoration: underline;
+      color: "[theme:linkHovered, default: #014446]";
+      color: var(
+        --linkHovered
+      ); // note: CSS Custom Properties support is limited to modern browsers only
+    }
+  }
+}
+
+.tableRow {
+  text-align: center;
+}
+
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,700,300);
+
+.flex {
+  display: flex;
+  gap: 22px;
+  padding: 15px;
+  color: #333333;
+  justify-content: center;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
+}
+
+.flex2 {
+  display: flex;
+  gap: 199px;
+  padding: 15px;
+  color: #333333;
+  box-shadow: 0 0px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
+  align-items: center;
+}
+
+.remainingLeaveText {
+  font-weight: 700;
+  text-align: center;
+  font-size: 16px;
+}
+
+.circle-wrap {
+  margin: 25px auto;
+  width: 150px;
+  height: 120px;
+  background: #fefcff;
+  border-radius: 50%;
+  // border: 1px solid #cdcbd0;
+}
+
+.circle-wrap .circle .mask,
+.circle-wrap .circle .fill {
+  width: 150px;
+  height: 150px;
+  position: absolute;
+  border-radius: 50%;
+}
+
+.circle-wrap .circle .mask {
+  clip: rect(0px, 150px, 150px, 75px);
+}
+
+.circle-wrap .inside-circle {
+  width: 122px;
+  height: 122px;
+  border-radius: 50%;
+  background: #d2eaf1;
+  line-height: 120px;
+  text-align: center;
+  margin-top: 14px;
+  margin-left: 14px;
+  color: #1e51dc;
+  position: absolute;
+  z-index: 100;
+  font-weight: 700;
+  font-size: 4em;
+}
+
+/* color animation */
+
+/* 3rd progress bar */
+.mask .fill {
+  clip: rect(0px, 75px, 150px, 0px);
+  background-color: #227ded;
+}
+
+.mask-full,
+.circle .fill {
+  animation: fill ease-in-out 3s;
+  transform: rotate(135deg);
+}
+
+@keyframes fill {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(135deg);
+  }
+}
+
+.LeaveButton {
+  text-align: end;
+}
+
+.SubmitBtn {
+  margin-left: 17rem;
+  margin-top: 2rem;
+}
+
+.LeaveManagementText {
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.customizedInput {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: grid;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.label {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.formWidth {
+  width: 500px;
+}
+
+.submissionButton {
+  cursor: pointer;
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: grid;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}

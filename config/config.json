@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "emp-leaves-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/empLeaves/EmpLeavesWebPart.js",
+          "manifest": "./src/webparts/empLeaves/EmpLeavesWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "EmpLeavesWebPartStrings": "lib/webparts/empLeaves/loc/{locale}.js"
+  }
+}

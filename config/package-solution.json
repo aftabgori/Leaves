@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "emp-leaves-client-side-solution",
+    "id": "8f7fa79d-8f15-4912-ba4c-17758261a5fb",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.16.0"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "emp-leaves description"
+      },
+      "longDescription": {
+        "default": "emp-leaves description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "emp-leaves Feature",
+        "description": "The feature that activates elements of the emp-leaves solution.",
+        "id": "bd898ae4-630f-4372-83ea-428cffa31a2b",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/emp-leaves.sppkg"
+  }
+}
