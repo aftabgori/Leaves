@@ -102,7 +102,7 @@ export default class EmpLeaves extends React.Component<
                     Leave Management
                   </div>
                   <div>
-                    <ModalBasicExample items={this.state.items} />
+                    <ModalBasicExample />
                   </div>
                 </div>
                 <div className={styles.flex}>
