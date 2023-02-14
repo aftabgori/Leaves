@@ -28,6 +28,7 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
+import axios from 'axios';
 
 export const ModalBasicExample: React.FunctionComponent = (props: any) => {
 
@@ -154,6 +155,52 @@ export const ModalBasicExample: React.FunctionComponent = (props: any) => {
     // const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
 
+    //GetUserData
+    const [items, setItems] = React.useState([]);
+    const [isLoading, setIsLoading] = React.useState(true);
+    // const [leaveCount, setLeaveCount] = React.useState(0);
+    // const [selectedOption, setSelectedOption] = React.useState("");
+
+    React.useEffect(() => {
+
+        const getCurrentUser = async () => {
+            const restApi = `https://tuliptechcom.sharepoint.com/_api/web/currentuser`;
+            const response = await axios.get(restApi, {
+                headers: {
+                    Accept: "application/json;odata=nometadata",
+                    "odata-version": "",
+                },
+            });
+            return response.data;
+        }
+
+        const getData = async (Url: any) => {
+            let url = null;
+            const currentUser = await getCurrentUser();
+            const email = currentUser.Email;
+            // const currentUserItem = res.data.value.find((item) => item.Email === email);
+
+
+            url =
+                Url +
+                `/sites/HumanResourceHR/_api/Web/Lists/getbytitle('Leave')/Items?$filter=Email eq '${email}'`;
+
+            try {
+                const res = await axios.get(url);
+                if (res.data.value != undefined && res.data.value != null) {
+                    setItems(res.data.value);
+                    setIsLoading(false);
+                    console.log(res.data.value[0]);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        getData("https://tuliptechcom.sharepoint.com")
+            .catch(error => console.log(error));
+    }, []);
+
     //inputs
     // const [leaveType, SetleaveType] = React.useState("");
     const [leaveType, setleaveType] = React.useState("");
@@ -163,8 +210,9 @@ export const ModalBasicExample: React.FunctionComponent = (props: any) => {
     const [totalDays, setTotalDays] = React.useState(0);
     const [halfDay, sethalfDay] = React.useState(null);
     const [isDisabled, setIsDisabled] = React.useState(true);
+    const [availableLeaves, setAvailableLeaves] = React.useState(0);
     // const { PaidLeavesBalance = 0 } = props;
-    const PaidLeavesBalance: number = 7;
+    // const PaidLeavesBalance: number = 7;
 
     const siteUrl = "https://tuliptechcom.sharepoint.com/sites/HumanResourceHR";
 
@@ -175,6 +223,7 @@ export const ModalBasicExample: React.FunctionComponent = (props: any) => {
     });
 
     const handleSubmit1 = async (e: any) => {
+
         e.preventDefault();
 
         try {
@@ -217,32 +266,45 @@ export const ModalBasicExample: React.FunctionComponent = (props: any) => {
 
         const diffTime = toDate.getTime() - fromDate.getTime();
         let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        diffDays = sethalfDay && fromDate.toDateString() === toDate.toDateString() ? diffDays - 0.5 : diffDays;
-        setTotalDays(diffDays + 1);
 
-        // const availableLeaves = props.items.PaidLeavesBalance != undefined ? props.items.PaidLeavesBalance : 0;
-        debugger;
-        // if (props.items && props.items.length > 0 && props.items['PaidLeavesBalance'] !== undefined) {
-        const paidLeavesBalance = parseFloat(PaidLeavesBalance.toString());
-
-        // console.log(diffDays);
-        // console.log(props.items['PaidLeavesBalance'])
-
-        if (!isNaN(paidLeavesBalance)) {
-            if (diffDays > paidLeavesBalance) {
-                setIsDisabled(true);
-            } else {
-                setIsDisabled(false);
-            }
-        } else {
-            console.error("Not valid");
+        if (fromDate.toDateString() !== toDate.toDateString()) {
+            sethalfDay(null);
         }
-        // }
+
+        if (halfDay === "First Half" || halfDay === "Second Half") {
+            diffDays = diffDays - 0.5;
+        }
+
+        setTotalDays(diffDays + 1);
     };
 
     React.useEffect(() => {
         calculateLeaves();
     }, [fromDate, toDate, halfDay]);
+
+    const handleSelect = (event: any) => {
+        const selectedLeaveType = event.target.value;
+        setleaveType(event.target.value);
+
+        // Set the number of available leaves based on the selected leave type
+        if (selectedLeaveType === 'Casual Leave' && items.length > 0) {
+            setAvailableLeaves(items[0].PaidLeavesBalance);
+        } else if (selectedLeaveType === 'Sick Leave' && items.length > 0) {
+            setAvailableLeaves(items[0].SickLeaveBalance);
+        } else {
+            setAvailableLeaves(0);
+        }
+    };
+
+    React.useEffect(() => {
+        if (leaveType === 'Casual Leave' && items.length > 0 && totalDays > items[0].PaidLeavesBalance) {
+            setIsDisabled(true);
+        } else if (leaveType === 'Sick Leave' && items.length > 0 && totalDays > items[0].SickLeaveBalance) {
+            setIsDisabled(true);
+        } else {
+            setIsDisabled(false);
+        }
+    }, [leaveType, totalDays, items]);
 
     return (
         <div>
@@ -269,26 +331,36 @@ export const ModalBasicExample: React.FunctionComponent = (props: any) => {
                     <form onSubmit={handleSubmit1} className={styles.formWidth}>
                         <div className={styles.customizedInput}>
                             <div>
-                                {props.items && props.items.CanTake === 'N' ? (
-                                    <div>
-                                        <label className={styles.label}>Leave Type</label>
-                                        <select required className={styles.customizedInput} value={leaveType} onChange={e => setleaveType(e.target.value)} name="LeaveType" id="leavetype">
-                                            <option>Unpaid Leave</option>
-                                        </select>
-                                    </div>
+                                {isLoading ? (
+                                    <p>Loading...</p>
                                 ) : (
-                                    <div>
-                                        <label className={styles.label}>Leave Type</label>
-                                        <select required className={styles.customizedInput} value={leaveType} onChange={e => setleaveType(e.target.value)} name="LeaveType" id="leavetype">
-                                            <option>Casual Leave</option>
-                                            <option>Sick Leave</option>
-                                            <option>Unpaid Leave</option>
-                                        </select>
-                                    </div>
-                                )
-                                }
-                            </div>
+                                    items.map((item, index) => (
+                                        <div key={index}>
+                                            {item.CanTake === "N" ? (
+                                                <div>
+                                                    <label className={styles.label}>Leave Type</label>
+                                                    <select required className={styles.customizedInput} value={leaveType || ''} onChange={handleSelect}>
+                                                        <option value="">--Select Leave Type--</option>
+                                                        <option value="Unpaid Leave">Unpaid Leave</option>
+                                                    </select>
+                                                </div>
+                                            ) : (
+                                                <div>
+                                                    <label className={styles.label}>Leave Type</label>
+                                                    <select required className={styles.customizedInput} value={leaveType || ''} onChange={handleSelect}>
+                                                        <option value="">--Select Leave Type--</option>
+                                                        <option value="Casual Leave">Casual Leave</option>
+                                                        <option value="Sick Leave">Sick Leave</option>
+                                                        <option value="Unpaid Leave">Unpaid Leave</option>
+                                                    </select>
+                                                </div>
+                                            )}
+                                        </div>
+                                    ))
 
+                                )}
+
+                            </div>
 
                             <br />
 
@@ -313,8 +385,9 @@ export const ModalBasicExample: React.FunctionComponent = (props: any) => {
                                     Half-day leave */}
 
                                         <label className={styles.label}>Half Day</label>
-                                        <select aria-required className={styles.customizedInput} value={halfDay} required onChange={(event) => sethalfDay(event.target.value)} >
-                                            <option>First half</option>
+                                        <select className={styles.customizedInput} value={halfDay} onChange={(event) => sethalfDay(event.target.value)} >
+                                            <option value="">--Select Half Day--</option>
+                                            <option>First Half</option>
                                             <option>Second Half</option>
                                         </select>
                                     </div>
@@ -330,10 +403,16 @@ export const ModalBasicExample: React.FunctionComponent = (props: any) => {
 
                             <br />
 
-                            <div>
-                                {/* Total Days: {totalDays} */}
-                                <label className={styles.label}>Total Days: </label>
-                                <input className={styles.customizedInput} type="text" disabled value={totalDays} name="totalDays" onChange={(e) => setTotalDays(parseInt(e.target.value))} />
+                            <div className={styles.flex3}>
+                                <div>
+                                    {/* Total Days: {totalDays} */}
+                                    <label className={styles.label}>Total Days: </label>
+                                    <input className={styles.customizedInput} type="text" disabled value={totalDays} name="totalDays" onChange={(e) => setTotalDays(parseInt(e.target.value))} />
+                                </div>
+                                <div>
+                                    <label className={styles.label}>Available Leaves: </label>
+                                    <input className={styles.customizedInput} type="text" disabled value={availableLeaves} name="availableLeaves" />
+                                </div>
                             </div>
 
                             <br />
