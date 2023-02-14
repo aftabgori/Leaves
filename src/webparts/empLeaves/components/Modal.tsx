@@ -231,7 +231,6 @@ export const ModalBasicExample: React.FunctionComponent = (props: any) => {
         if (!isNaN(paidLeavesBalance)) {
             if (diffDays > paidLeavesBalance) {
                 setIsDisabled(true);
-                window.Error("You've requesting more leaves than your available balance!!!")
             } else {
                 setIsDisabled(false);
             }
@@ -314,7 +313,7 @@ export const ModalBasicExample: React.FunctionComponent = (props: any) => {
                                     Half-day leave */}
 
                                         <label className={styles.label}>Half Day</label>
-                                        <select className={styles.customizedInput} value={halfDay} required onChange={(event) => sethalfDay(event.target.value)} >
+                                        <select aria-required className={styles.customizedInput} value={halfDay} required onChange={(event) => sethalfDay(event.target.value)} >
                                             <option>First half</option>
                                             <option>Second Half</option>
                                         </select>
