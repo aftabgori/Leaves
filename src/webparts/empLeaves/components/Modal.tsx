@@ -210,7 +210,7 @@ export const ModalBasicExample: React.FunctionComponent = (props: any) => {
     const [totalDays, setTotalDays] = React.useState(0);
     const [halfDay, sethalfDay] = React.useState(null);
     const [isDisabled, setIsDisabled] = React.useState(true);
-    const [availableLeaves, setAvailableLeaves] = React.useState(0);
+    const [availableLeaves, setAvailableLeaves] = React.useState(null);
     // const { PaidLeavesBalance = 0 } = props;
     // const PaidLeavesBalance: number = 7;
 
@@ -291,6 +291,8 @@ export const ModalBasicExample: React.FunctionComponent = (props: any) => {
             setAvailableLeaves(items[0].PaidLeavesBalance);
         } else if (selectedLeaveType === 'Sick Leave' && items.length > 0) {
             setAvailableLeaves(items[0].SickLeaveBalance);
+        } else if (selectedLeaveType === 'Unpaid Leave') {
+            setAvailableLeaves('N/A')
         } else {
             setAvailableLeaves(0);
         }
