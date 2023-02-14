@@ -211,6 +211,8 @@ export const ModalBasicExample: React.FunctionComponent = (props: any) => {
     const [halfDay, sethalfDay] = React.useState(null);
     const [isDisabled, setIsDisabled] = React.useState(true);
     const [availableLeaves, setAvailableLeaves] = React.useState(null);
+    const [message, setMessage] = React.useState('');
+    const [submitted, setSubmitted] = React.useState(false);
     // const { PaidLeavesBalance = 0 } = props;
     // const PaidLeavesBalance: number = 7;
 
@@ -242,6 +244,17 @@ export const ModalBasicExample: React.FunctionComponent = (props: any) => {
         } catch (error) {
             console.error(error);
         }
+
+        setleaveType('');
+        setfromDate(null);
+        settoDate(null);
+        sethalfDay('');
+        setReason('');
+        setTotalDays(0);
+        setAvailableLeaves(0);
+
+        setMessage('Form submitted successfully! You will notified through mail for the confirmation of request!');
+        setSubmitted(true);
     };
 
 
@@ -421,6 +434,7 @@ export const ModalBasicExample: React.FunctionComponent = (props: any) => {
 
                             <div>
                                 <button className={styles.submissionButton} disabled={isDisabled} type="submit">Submit</button>
+                                {submitted && message && <div className={styles.OnSubmitMessage}>{message}</div>}
                             </div>
                         </div>
                     </form>
