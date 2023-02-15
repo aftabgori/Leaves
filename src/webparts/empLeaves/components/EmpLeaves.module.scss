@@ -52,6 +52,29 @@
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
 }
 
+.grid-container {
+  display: flex;
+  gap: 22px;
+  padding: 15px;
+  color: #333333;
+  justify-content: center;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
+}
+
+@media screen and (max-width: 768px) {
+  .grid-container {
+    display: grid;
+    // grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .grid-container {
+    display: grid;
+    // grid-template-columns: 1fr;
+  }
+}
+
 .flex2 {
   display: flex;
   gap: 199px;
@@ -59,6 +82,20 @@
   color: #333333;
   box-shadow: 0 0px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
   align-items: center;
+}
+
+@media screen and (max-width: 768px) {
+  .flex2 {
+    gap: 20px;
+    // grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .flex2 {
+    gap: 20px;
+    // grid-template-columns: 1fr;
+  }
 }
 
 .remainingLeaveText {
@@ -145,10 +182,11 @@
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
-  display: grid;
+  // display: grid;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
+  border-top: white;
 }
 
 .label {
@@ -158,6 +196,13 @@
 
 .formWidth {
   width: 500px;
+}
+
+@media only screen and (max-width: 768px) {
+  /* set the width to 100% for small screens */
+  .formWidth {
+    width: 100%;
+  }
 }
 
 .submissionButton {
@@ -174,6 +219,7 @@
 .flex3 {
   display: flex;
   justify-content: space-between;
+  gap: 8px;
 }
 
 .OnSubmitMessage {

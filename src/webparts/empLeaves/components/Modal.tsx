@@ -385,23 +385,23 @@ export const ModalBasicExample: React.FunctionComponent = () => {
                                                 )}
                                             </div>
                                         ))
-
                                     )}
-
                                 </div>
 
                                 <br />
 
                                 <div>
-                                    <label className={styles.label}>From:</label>
-                                    <input className={styles.customizedInput} required onChange={(event) => handleStartDateChange(new Date(event.target.value))} type="date" id="FromDate" name="fromdate" />
-                                </div>
+                                    <div>
+                                        <label className={styles.label}>From:</label>
+                                        <input className={styles.customizedInput} required onChange={(event) => handleStartDateChange(new Date(event.target.value))} type="date" id="FromDate" name="fromdate" />
+                                    </div>
 
-                                <br />
+                                    <br />
 
-                                <div>
-                                    <label className={styles.label}>To:</label>
-                                    <input className={styles.customizedInput} required onChange={(event) => handleEndDateChange(new Date(event.target.value))} type="date" id="toDate" name="todate" />
+                                    <div>
+                                        <label className={styles.label}>To:</label>
+                                        <input className={styles.customizedInput} required onChange={(event) => handleEndDateChange(new Date(event.target.value))} type="date" id="toDate" name="todate" />
+                                    </div>
                                 </div>
 
                                 <br />
@@ -453,7 +453,11 @@ export const ModalBasicExample: React.FunctionComponent = () => {
                         </form>
                     )}
                     {submitted && (
-                        <div className={styles.OnSubmitMessage}> <div className={styles.OnSubmitMessageH1}>Your leave request has been submitted successfully!</div> <br /> <div className={styles.OnSubmitMessageP}>We will notify you through mail as we review your request.</div></div>
+                        <div className={styles.OnSubmitMessage}>
+                            <div className={styles.OnSubmitMessageH1} style={{ marginBottom: '10px' }}>Your leave request has been submitted successfully!</div>
+                            <div className={styles.OnSubmitMessageP} style={{ marginTop: '20px', marginBottom: '20px' }}>We will notify you through mail as we review your request.</div>
+                            <PrimaryButton onClick={handleCloseModal} text="Close" style={{ marginTop: '10px' }} />
+                        </div>
                     )}
                 </div>
             </Modal >

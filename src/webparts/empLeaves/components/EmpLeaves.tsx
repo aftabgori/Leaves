@@ -105,7 +105,7 @@ export default class EmpLeaves extends React.Component<
                     <ModalBasicExample />
                   </div>
                 </div>
-                <div className={styles.flex}>
+                <div className={styles["grid-container"]}>
                   <div>
                     <div className={styles["circle-wrap"]}>
                       <div className={styles.circle}>
