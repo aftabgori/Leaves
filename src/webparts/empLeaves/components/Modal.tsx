@@ -211,7 +211,7 @@ export const ModalBasicExample: React.FunctionComponent = (props: any) => {
     const [halfDay, sethalfDay] = React.useState(null);
     const [isDisabled, setIsDisabled] = React.useState(true);
     const [availableLeaves, setAvailableLeaves] = React.useState(null);
-    const [message, setMessage] = React.useState('');
+    // const [message, setMessage] = React.useState('');
     const [submitted, setSubmitted] = React.useState(false);
     // const { PaidLeavesBalance = 0 } = props;
     // const PaidLeavesBalance: number = 7;
@@ -253,7 +253,7 @@ export const ModalBasicExample: React.FunctionComponent = (props: any) => {
         setTotalDays(0);
         setAvailableLeaves(0);
 
-        setMessage('Form submitted successfully! You will notified through mail for the confirmation of request!');
+        // setMessage('Form submitted successfully! You will notified through mail for the confirmation of request!');
         setSubmitted(true);
     };
 
@@ -321,13 +321,25 @@ export const ModalBasicExample: React.FunctionComponent = (props: any) => {
         }
     }, [leaveType, totalDays, items]);
 
+    //close modal
+    const handleCloseModal = () => {
+        setSubmitted(false);
+        hideModal();
+    }
+
+    const handleOpenModal = () => {
+        setSubmitted(false);
+        showModal();
+    }
+
+
     return (
         <div>
-            <PrimaryButton onClick={showModal} text="Request a Leave" />
+            <PrimaryButton onClick={handleOpenModal} text="Request a Leave" />
             <Modal
                 titleAriaId={titleId}
                 isOpen={isModalOpen}
-                onDismiss={hideModal}
+                onDismiss={handleCloseModal}
                 isBlocking={false}
                 containerClassName={contentStyles.container}
             >
@@ -343,101 +355,106 @@ export const ModalBasicExample: React.FunctionComponent = (props: any) => {
                     />
                 </div>
                 <div className={contentStyles.body}>
-                    <form onSubmit={handleSubmit1} className={styles.formWidth}>
-                        <div className={styles.customizedInput}>
-                            <div>
-                                {isLoading ? (
-                                    <p>Loading...</p>
-                                ) : (
-                                    items.map((item, index) => (
-                                        <div key={index}>
-                                            {item.CanTake === "N" ? (
-                                                <div>
-                                                    <label className={styles.label}>Leave Type</label>
-                                                    <select required className={styles.customizedInput} value={leaveType || ''} onChange={handleSelect}>
-                                                        <option value="">--Select Leave Type--</option>
-                                                        <option value="Unpaid Leave">Unpaid Leave</option>
-                                                    </select>
-                                                </div>
-                                            ) : (
-                                                <div>
-                                                    <label className={styles.label}>Leave Type</label>
-                                                    <select required className={styles.customizedInput} value={leaveType || ''} onChange={handleSelect}>
-                                                        <option value="">--Select Leave Type--</option>
-                                                        <option value="Casual Leave">Casual Leave</option>
-                                                        <option value="Sick Leave">Sick Leave</option>
-                                                        <option value="Unpaid Leave">Unpaid Leave</option>
-                                                    </select>
-                                                </div>
-                                            )}
-                                        </div>
-                                    ))
+                    {!submitted && (
+                        <form onSubmit={handleSubmit1} className={styles.formWidth}>
+                            <div className={styles.customizedInput}>
+                                <div>
+                                    {isLoading ? (
+                                        <p>Loading...</p>
+                                    ) : (
+                                        items.map((item, index) => (
+                                            <div key={index}>
+                                                {item.CanTake === "N" ? (
+                                                    <div>
+                                                        <label className={styles.label}>Leave Type</label>
+                                                        <select required className={styles.customizedInput} value={leaveType || ''} onChange={handleSelect}>
+                                                            <option value="">--Select Leave Type--</option>
+                                                            <option value="Unpaid Leave">Unpaid Leave</option>
+                                                        </select>
+                                                    </div>
+                                                ) : (
+                                                    <div>
+                                                        <label className={styles.label}>Leave Type</label>
+                                                        <select required className={styles.customizedInput} value={leaveType || ''} onChange={handleSelect}>
+                                                            <option value="">--Select Leave Type--</option>
+                                                            <option value="Casual Leave">Casual Leave</option>
+                                                            <option value="Sick Leave">Sick Leave</option>
+                                                            <option value="Unpaid Leave">Unpaid Leave</option>
+                                                        </select>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        ))
 
-                                )}
+                                    )}
 
-                            </div>
+                                </div>
 
-                            <br />
+                                <br />
 
-                            <div>
-                                <label className={styles.label}>From:</label>
-                                <input className={styles.customizedInput} required onChange={(event) => handleStartDateChange(new Date(event.target.value))} type="date" id="FromDate" name="fromdate" />
-                            </div>
+                                <div>
+                                    <label className={styles.label}>From:</label>
+                                    <input className={styles.customizedInput} required onChange={(event) => handleStartDateChange(new Date(event.target.value))} type="date" id="FromDate" name="fromdate" />
+                                </div>
 
-                            <br />
+                                <br />
 
-                            <div>
-                                <label className={styles.label}>To:</label>
-                                <input className={styles.customizedInput} required onChange={(event) => handleEndDateChange(new Date(event.target.value))} type="date" id="toDate" name="todate" />
-                            </div>
+                                <div>
+                                    <label className={styles.label}>To:</label>
+                                    <input className={styles.customizedInput} required onChange={(event) => handleEndDateChange(new Date(event.target.value))} type="date" id="toDate" name="todate" />
+                                </div>
 
-                            <br />
+                                <br />
 
-                            <div>
-                                {fromDate && toDate && fromDate.toDateString() === toDate.toDateString() && (
-                                    <div>
-                                        {/* <input type="checkbox" value={halfDay} onChange={(event) => sethalfDay(event.target.value)} />
+                                <div>
+                                    {fromDate && toDate && fromDate.toDateString() === toDate.toDateString() && (
+                                        <div>
+                                            {/* <input type="checkbox" value={halfDay} onChange={(event) => sethalfDay(event.target.value)} />
                                     Half-day leave */}
 
-                                        <label className={styles.label}>Half Day</label>
-                                        <select className={styles.customizedInput} value={halfDay} onChange={(event) => sethalfDay(event.target.value)} >
-                                            <option value="">--Select Half Day--</option>
-                                            <option>First Half</option>
-                                            <option>Second Half</option>
-                                        </select>
+                                            <label className={styles.label}>Half Day</label>
+                                            <select className={styles.customizedInput} value={halfDay} onChange={(event) => sethalfDay(event.target.value)} >
+                                                <option value="">--Select Half Day--</option>
+                                                <option>First Half</option>
+                                                <option>Second Half</option>
+                                            </select>
+                                        </div>
+                                    )}
+                                </div>
+
+                                <br />
+
+                                <div>
+                                    <label className={styles.label}>Reason</label>
+                                    <textarea className={styles.customizedInput} required value={reason} onChange={e => setReason(e.target.value)} id="w3review" name="w3review" />
+                                </div>
+
+                                <br />
+
+                                <div className={styles.flex3}>
+                                    <div>
+                                        {/* Total Days: {totalDays} */}
+                                        <label className={styles.label}>Total Days: </label>
+                                        <input className={styles.customizedInput} type="text" disabled value={totalDays} name="totalDays" onChange={(e) => setTotalDays(parseInt(e.target.value))} />
                                     </div>
-                                )}
-                            </div>
-
-                            <br />
-
-                            <div>
-                                <label className={styles.label}>Reason</label>
-                                <textarea className={styles.customizedInput} required value={reason} onChange={e => setReason(e.target.value)} id="w3review" name="w3review" />
-                            </div>
-
-                            <br />
-
-                            <div className={styles.flex3}>
-                                <div>
-                                    {/* Total Days: {totalDays} */}
-                                    <label className={styles.label}>Total Days: </label>
-                                    <input className={styles.customizedInput} type="text" disabled value={totalDays} name="totalDays" onChange={(e) => setTotalDays(parseInt(e.target.value))} />
+                                    <div>
+                                        <label className={styles.label}>Available Leaves: </label>
+                                        <input className={styles.customizedInput} type="text" disabled value={availableLeaves} name="availableLeaves" />
+                                    </div>
                                 </div>
+
+                                <br />
+
                                 <div>
-                                    <label className={styles.label}>Available Leaves: </label>
-                                    <input className={styles.customizedInput} type="text" disabled value={availableLeaves} name="availableLeaves" />
+                                    <button className={styles.submissionButton} disabled={isDisabled} type="submit">Submit</button>
+                                    {/* {submitted && message && <div className={styles.OnSubmitMessage}>{message}</div>} */}
                                 </div>
                             </div>
-
-                            <br />
-
-                            <div>
-                                <button className={styles.submissionButton} disabled={isDisabled} type="submit">Submit</button>
-                                {submitted && message && <div className={styles.OnSubmitMessage}>{message}</div>}
-                            </div>
-                        </div>
-                    </form>
+                        </form>
+                    )}
+                    {submitted && (
+                        <div className={styles.OnSubmitMessage}>Form submitted successfully! You will notified through mail for the confirmation of request!</div>
+                    )}
                 </div>
             </Modal >
         </div >

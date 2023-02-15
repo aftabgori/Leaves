@@ -116,7 +116,7 @@ export default class EmpLeaves extends React.Component<
                           <div className={styles.fill} />
                         </div>
                         <div className={styles["inside-circle"]}>
-                          {item.CanTake === "N" ? 0 : item.PaidLeavesBalance}
+                          {item.CanTake === "N" ? 'N/A' : item.PaidLeavesBalance}
                         </div>
                       </div>
                     </div>
@@ -135,7 +135,7 @@ export default class EmpLeaves extends React.Component<
                           <div className={styles.fill} />
                         </div>
                         <div className={styles["inside-circle"]}>
-                          {item.CanTake === "N" ? 0 : item.SickLeaveBalance}
+                          {item.CanTake === "N" ? 'N/A' : item.SickLeaveBalance}
                         </div>
                       </div>
                     </div>
