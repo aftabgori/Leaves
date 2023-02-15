@@ -30,7 +30,7 @@ import "@pnp/sp/lists";
 import "@pnp/sp/items";
 import axios from 'axios';
 
-export const ModalBasicExample: React.FunctionComponent = (props: any) => {
+export const ModalBasicExample: React.FunctionComponent = () => {
 
     // const { PaidLeavesBalance = 0 } = props;
 
@@ -453,7 +453,7 @@ export const ModalBasicExample: React.FunctionComponent = (props: any) => {
                         </form>
                     )}
                     {submitted && (
-                        <div className={styles.OnSubmitMessage}>Form submitted successfully! You will notified through mail for the confirmation of request!</div>
+                        <div className={styles.OnSubmitMessage}> <div className={styles.OnSubmitMessageH1}>Your leave request has been submitted successfully!</div> <br /> <div className={styles.OnSubmitMessageP}>We will notify you through mail as we review your request.</div></div>
                     )}
                 </div>
             </Modal >
