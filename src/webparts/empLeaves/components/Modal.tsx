@@ -315,10 +315,10 @@ export const ModalBasicExample: React.FunctionComponent = () => {
     React.useEffect(() => {
         if (leaveType === 'Casual Leave' && items.length > 0 && totalDays > items[0].PaidLeavesBalance) {
             setIsDisabled(true);
-            seterrorMessage('Insufficient casual leave balance');
+            seterrorMessage('!!! Insufficient Casual Leave Balance');
         } else if (leaveType === 'Sick Leave' && items.length > 0 && totalDays > items[0].SickLeaveBalance) {
             setIsDisabled(true);
-            seterrorMessage('Insufficient sick leave balance');
+            seterrorMessage('!!! Insufficient Sick Leave Balance');
         } else {
             setIsDisabled(false);
             seterrorMessage('');
@@ -327,7 +327,7 @@ export const ModalBasicExample: React.FunctionComponent = () => {
 
     //close modal
     const handleCloseModal = () => {
-        setSubmitted(false);
+        // setSubmitted(false);
         hideModal();
     }
 
@@ -335,7 +335,6 @@ export const ModalBasicExample: React.FunctionComponent = () => {
         setSubmitted(false);
         showModal();
     }
-
 
     return (
         <div>
@@ -438,7 +437,7 @@ export const ModalBasicExample: React.FunctionComponent = () => {
                                 <div className={styles.flex3}>
                                     <div>
                                         {/* Total Days: {totalDays} */}
-                                        <label className={styles.label}>Total Days: </label>
+                                        <label className={styles.label}>Number of Days Leave: </label>
                                         <input className={styles.customizedInput} type="text" disabled value={totalDays} name="totalDays" onChange={(e) => setTotalDays(parseInt(e.target.value))} />
                                     </div>
                                     <div>
@@ -449,9 +448,10 @@ export const ModalBasicExample: React.FunctionComponent = () => {
 
                                 <br />
 
-                                <div>
-                                    {errorMessage && <div style={{ color: 'red', fontSize: '16px'}}>{errorMessage}</div>}
-                                    <button className={styles.submissionButton} disabled={isDisabled} type="submit">Submit</button>
+                                <div className={styles.submissionButton}>
+                                    {errorMessage && <div className={styles['error-message']} style={{ color: 'red', fontSize: '16px', marginBottom: '16px' }}>{errorMessage}</div>}
+                                    {/* <button className={styles.submissionButton} disabled={isDisabled} type="submit">Submit</button> */}
+                                    <PrimaryButton className={styles.submissionButton1} type='submit' text="Submit" style={{ textAlign: 'center'  }} disabled={isDisabled} />
                                     {/* {submitted && message && <div className={styles.OnSubmitMessage}>{message}</div>} */}
                                 </div>
                             </div>
