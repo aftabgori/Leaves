@@ -213,6 +213,7 @@ export const ModalBasicExample: React.FunctionComponent = () => {
     const [availableLeaves, setAvailableLeaves] = React.useState(null);
     // const [message, setMessage] = React.useState('');
     const [submitted, setSubmitted] = React.useState(false);
+    const [errorMessage, seterrorMessage] = React.useState('');
     // const { PaidLeavesBalance = 0 } = props;
     // const PaidLeavesBalance: number = 7;
 
@@ -314,10 +315,13 @@ export const ModalBasicExample: React.FunctionComponent = () => {
     React.useEffect(() => {
         if (leaveType === 'Casual Leave' && items.length > 0 && totalDays > items[0].PaidLeavesBalance) {
             setIsDisabled(true);
+            seterrorMessage('Insufficient casual leave balance');
         } else if (leaveType === 'Sick Leave' && items.length > 0 && totalDays > items[0].SickLeaveBalance) {
             setIsDisabled(true);
+            seterrorMessage('Insufficient sick leave balance');
         } else {
             setIsDisabled(false);
+            seterrorMessage('');
         }
     }, [leaveType, totalDays, items]);
 
@@ -446,6 +450,7 @@ export const ModalBasicExample: React.FunctionComponent = () => {
                                 <br />
 
                                 <div>
+                                    {errorMessage && <div style={{ color: 'red', fontSize: '16px'}}>{errorMessage}</div>}
                                     <button className={styles.submissionButton} disabled={isDisabled} type="submit">Submit</button>
                                     {/* {submitted && message && <div className={styles.OnSubmitMessage}>{message}</div>} */}
                                 </div>
