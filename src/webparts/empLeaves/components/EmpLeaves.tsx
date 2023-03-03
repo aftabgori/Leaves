@@ -2,34 +2,29 @@ import * as React from "react";
 import axios from "axios";
 import styles from "./EmpLeaves.module.scss";
 import { IEmpLeavesProps } from "./IEmpLeavesProps";
-// import Divider from '@mui/material/Divider';
-// import Box from '@mui/material/Box';
-// import Button from '@mui/material/Button';
-// import Typography from '@mui/material/Typography';
-// import Modal from '@mui/material/Modal';
 import { ModalBasicExample } from "./Modal";
-// import pnp from "sp-pnp-js"
 import { CurrentUser } from "sp-pnp-js/lib/sharepoint/siteusers";
-// import { CurrentUser } from "sp-pnp-js/lib/sharepoint/siteusers";
-// import AddItemForm from "./AddItem";
-// import { sp } from "@pnp/sp";
-// import BasicModal from "./Modal2";
-
+import {
+  // CircularProgressbar,
+  CircularProgressbarWithChildren,
+  buildStyles,
+} from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 export interface IEmpLeavesState {
+  showModal: boolean;
   isLoading: boolean;
   items: [
     {
       key: number;
       Title: string;
       Email: string;
-      PaidLeavesBalance: string;
-      SickLeaveBalance: string;
+      PaidLeavesBalance: number;
+      SickLeaveBalance: number;
       CanTake: string;
     }
   ];
 }
 
-// export class MyListTable extends React.Component {
 export default class EmpLeaves extends React.Component<
   IEmpLeavesProps,
   IEmpLeavesState
@@ -37,33 +32,36 @@ export default class EmpLeaves extends React.Component<
   public constructor(props: IEmpLeavesProps, state: IEmpLeavesState) {
     super(props);
     this.state = {
+      showModal: false,
       isLoading: true,
       items: [
         {
           key: 0,
           Title: "",
           Email: "",
-          PaidLeavesBalance: "",
-          SickLeaveBalance: "",
+          PaidLeavesBalance: 0,
+          SickLeaveBalance: 0,
           CanTake: "",
         },
       ],
     };
+
   }
 
   //axios
   public async componentDidMount() {
-    await this.getData(this.props.siteurl);
+    await this.getData();
   }
 
-  public async getData(Url: string) {
+  public async getData() {
     let url = null;
+    const siteUrl = "https://tuliptechcom.sharepoint.com/sites/HumanResourceHR";
     const currentUser = await this.getCurrentUser();
     const email = currentUser.Email;
 
     url =
-      Url +
-      `/sites/HumanResourceHR/_api/Web/Lists/getbytitle('Leave')/Items?$filter=Email eq '${email}'`;
+      siteUrl +
+      `/_api/Web/Lists/getbytitle('Leave')/Items?$filter=Email eq '${email}'`;
 
     try {
       const res = await axios.get(url);
@@ -93,10 +91,10 @@ export default class EmpLeaves extends React.Component<
 
     return (
       <div>
-        <div>
-          {this.state.items.map(function (item) {
+        <div className={styles.MainDiv}>
+          {this.state.items.map((item) => {
             return (
-              <tr key={item.key}>
+              <div key={item.key}>
                 <div className={styles.flex2}>
                   <div className={styles.LeaveManagementText}>
                     Leave Management
@@ -105,46 +103,56 @@ export default class EmpLeaves extends React.Component<
                     <ModalBasicExample />
                   </div>
                 </div>
-                <div className={styles["grid-container"]}>
-                  <div>
-                    <div className={styles["circle-wrap"]}>
-                      <div className={styles.circle}>
-                        <div>
-                          <div />
-                        </div>
-                        <div>
-                          <div className={styles.fill} />
-                        </div>
-                        <div className={styles["inside-circle"]}>
-                          {item.CanTake === "N" ? 'N/A' : item.PaidLeavesBalance}
-                        </div>
-                      </div>
+                <div className={styles.ProgressBarMainDiv}>
+                  <div className={styles.ProgressBarChildern}>
+                    <div className={styles.ProgressBarChildernWrapper}>
+                      <CircularProgressbarWithChildren
+                        value={(item.PaidLeavesBalance / 7) * 100}
+                        text={
+                          item.CanTake === "N"
+                            ? "N/A"
+                            : item.PaidLeavesBalance.toString()
+                        }
+                        strokeWidth={12}
+                        styles={buildStyles({
+                          textColor: "red",
+                          pathColor: "#1F51FF",
+                          trailColor: "silver",
+                        })}
+                      />
                     </div>
-                    <div className={styles.remainingLeaveText}>
-                      Casual Leave <br /> Available
+                    <div className={styles.ProgressBarChildernText}>
+                      <div className={styles.MainText}>Casual Leave</div>
+                      <div>Your total casual leave is 7 days.</div>
+                      <div>{Math.abs(item.PaidLeavesBalance - 7)} days taken.</div>
                     </div>
                   </div>
-
-                  <div>
-                    <div className={styles["circle-wrap"]}>
-                      <div className={styles.circle}>
-                        <div>
-                          <div />
-                        </div>
-                        <div>
-                          <div className={styles.fill} />
-                        </div>
-                        <div className={styles["inside-circle"]}>
-                          {item.CanTake === "N" ? 'N/A' : item.SickLeaveBalance}
-                        </div>
-                      </div>
+                  <div className={styles.ProgressBarChildern}>
+                    <div className={styles.ProgressBarChildernWrapper}>
+                      <CircularProgressbarWithChildren
+                        className={styles.CircularProgressbarText}
+                        value={(item.SickLeaveBalance / 5) * 100}
+                        text={
+                          item.CanTake === "N"
+                            ? "N/A"
+                            : item.SickLeaveBalance.toString()
+                        }
+                        strokeWidth={12}
+                        styles={buildStyles({
+                          textColor: "red",
+                          pathColor: "green",
+                          trailColor: "silver",
+                        })}
+                      />
                     </div>
-                    <div className={styles.remainingLeaveText}>
-                      Sick Leave <br /> Available
+                    <div className={styles.ProgressBarChildernText}>
+                      <div className={styles.MainText}>Sick Leave</div>
+                      <div>Your total sick leave is 5 days.</div>
+                      <div>{Math.abs(item.SickLeaveBalance - 5)} days taken.</div>
                     </div>
                   </div>
                 </div>
-              </tr>
+              </div>
             );
           })}
         </div>

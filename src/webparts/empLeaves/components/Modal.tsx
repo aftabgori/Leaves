@@ -8,31 +8,15 @@ import {
     IIconProps,
 } from '@fluentui/react';
 import { IconButton, IButtonStyles } from '@fluentui/react/lib/Button';
-// import { TextField } from '@fluentui/react/lib/TextField';
-// import { IStackProps, IStackStyles } from '@fluentui/react/lib/Stack';
-// import {
-//     DatePicker,
-//     // DayOfWeek,
-//     Dropdown,
-//     IDropdownOption,
-//     // mergeStyles,
-//     // defaultDatePickerStrings,
-// } from '@fluentui/react';
-// import { IDropdownStyles } from 'office-ui-fabric-react';
-// import { IStackTokens } from '@fluentui/react';
 import { PrimaryButton } from '@fluentui/react/lib/Button';
 import styles from "./EmpLeaves.module.scss";
-// import * as SP from "@microsoft/sp-webpart-base";
 import { sp } from "@pnp/sp";
-// import axios from "axios";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 import axios from 'axios';
 
 export const ModalBasicExample: React.FunctionComponent = () => {
-
-    // const { PaidLeavesBalance = 0 } = props;
 
     const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(false);
 
@@ -89,79 +73,15 @@ export const ModalBasicExample: React.FunctionComponent = () => {
         },
     };
 
-    //textfield
-    // const stackTokens = { childrenGap: 50 };
-    // // const iconProps = { iconName: 'Calendar' };
-    // const stackStyles: Partial<IStackStyles> = { root: { width: 650 } };
-    // const columnProps: Partial<IStackProps> = {
-    //     tokens: { childrenGap: 15 },
-    //     styles: { root: { width: 300 } },
-    // };
-
-    //DatePicker
-    // const days: IDropdownOption[] = [
-    //     { text: 'Sunday', key: DayOfWeek.Sunday },
-    //     { text: 'Monday', key: DayOfWeek.Monday },
-    //     { text: 'Tuesday', key: DayOfWeek.Tuesday },
-    //     { text: 'Wednesday', key: DayOfWeek.Wednesday },
-    //     { text: 'Thursday', key: DayOfWeek.Thursday },
-    //     { text: 'Friday', key: DayOfWeek.Friday },
-    //     { text: 'Saturday', key: DayOfWeek.Saturday },
-    // ];
-
-    // const [firstDayOfWeek, setFirstDayOfWeek] = React.useState(DayOfWeek.Sunday);
-
-    // const onDropdownChange = React.useCallback((event: React.FormEvent<HTMLDivElement>, option: IDropdownOption) => {
-    //     setFirstDayOfWeek(option.key as number);
-    // }, []);
-    // const rootClass = mergeStyles({ maxWidth: 300, selectors: { '> *': { marginBottom: 15 } } });
-
-    //dropdown
-    // const dropdownStyles: Partial<IDropdownStyles> = {
-    //     dropdown: { width: 300 },
-    // };
-
-    // const options1: IDropdownOption[] = [
-    //     { key: 'sickLeave', text: 'Sick Leave' },
-    //     { key: 'casualLeave', text: 'Casual Leave' },
-    //     { key: 'paidLeave', text: 'Paid Leave' },
-    // ];
-
-    // const options2: IDropdownOption[] = [
-    //     { key: 'firstHalf', text: 'First Half' },
-    //     { key: 'secondHalf', text: 'Second Half' },
-    // ];
-
-
-    // const handleSubmit = (e: any) => {
-    //     console.log(e.target.value);
-    //     // console.log(leaveType, remainingLeaves, fromDate, toDate, halfDay, noOfDayLeave, reason);
-    // }
-
-    //calculate days
-
-    // const [start, setStart] = React.useState(new Date());
-    // const [end, setEnd] = React.useState(new Date());
-
-    // const handleStartChange = (date: any) => {
-    //     setStart(date);
-    // };
-
-    // const handleEndChange = (Date: any) => {
-    //     setEnd(Date);
-    // };
-
-    // const diffTime = end.getTime() - start.getTime();
-    // const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
 
     //GetUserData
     const [items, setItems] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(true);
-    // const [leaveCount, setLeaveCount] = React.useState(0);
-    // const [selectedOption, setSelectedOption] = React.useState("");
 
     React.useEffect(() => {
+
+        const siteUrl = "https://tuliptechcom.sharepoint.com/sites/HumanResourceHR";
+
 
         const getCurrentUser = async () => {
             const restApi = `https://tuliptechcom.sharepoint.com/_api/web/currentuser`;
@@ -174,16 +94,14 @@ export const ModalBasicExample: React.FunctionComponent = () => {
             return response.data;
         }
 
-        const getData = async (Url: any) => {
+        const getData = async () => {
             let url = null;
             const currentUser = await getCurrentUser();
             const email = currentUser.Email;
-            // const currentUserItem = res.data.value.find((item) => item.Email === email);
-
 
             url =
-                Url +
-                `/sites/HumanResourceHR/_api/Web/Lists/getbytitle('Leave')/Items?$filter=Email eq '${email}'`;
+                siteUrl +
+                `/_api/Web/Lists/getbytitle('Leave')/Items?$filter=Email eq '${email}'`;
 
             try {
                 const res = await axios.get(url);
@@ -197,12 +115,11 @@ export const ModalBasicExample: React.FunctionComponent = () => {
             }
         }
 
-        getData("https://tuliptechcom.sharepoint.com")
+        getData()
             .catch(error => console.log(error));
     }, []);
 
     //inputs
-    // const [leaveType, SetleaveType] = React.useState("");
     const [leaveType, setleaveType] = React.useState("");
     const [reason, setReason] = React.useState("");
     const [fromDate, setfromDate] = React.useState(null);
@@ -211,11 +128,8 @@ export const ModalBasicExample: React.FunctionComponent = () => {
     const [halfDay, sethalfDay] = React.useState(null);
     const [isDisabled, setIsDisabled] = React.useState(true);
     const [availableLeaves, setAvailableLeaves] = React.useState(null);
-    // const [message, setMessage] = React.useState('');
     const [submitted, setSubmitted] = React.useState(false);
     const [errorMessage, seterrorMessage] = React.useState('');
-    // const { PaidLeavesBalance = 0 } = props;
-    // const PaidLeavesBalance: number = 7;
 
     const siteUrl = "https://tuliptechcom.sharepoint.com/sites/HumanResourceHR";
 
@@ -232,8 +146,8 @@ export const ModalBasicExample: React.FunctionComponent = () => {
         try {
             const item = {
                 LeaveType: leaveType,
-                FromDate: fromDate,
-                ToDate: toDate,
+                FromDate: fromDate.toISOString().substring(0, 10),
+                ToDate: toDate.toISOString().substring(0, 10),
                 HalfDay: halfDay,
                 Reason: reason,
                 NoOfDays: totalDays.toString(),
@@ -253,14 +167,11 @@ export const ModalBasicExample: React.FunctionComponent = () => {
         setReason('');
         setTotalDays(0);
         setAvailableLeaves(0);
-
-        // setMessage('Form submitted successfully! You will notified through mail for the confirmation of request!');
         setSubmitted(true);
     };
 
 
-    //calculate day
-
+    //calculate days
     const handleStartDateChange = (date: any) => {
         setfromDate(date);
     };
@@ -268,10 +179,6 @@ export const ModalBasicExample: React.FunctionComponent = () => {
     const handleEndDateChange = (date: any) => {
         settoDate(date);
     };
-
-    // const handleIsHalfDayChange = (event: any) => {
-    //     sethalfDay(event);
-    // };
 
     const calculateLeaves = () => {
         if (!fromDate || !toDate) {
@@ -329,6 +236,14 @@ export const ModalBasicExample: React.FunctionComponent = () => {
     const handleCloseModal = () => {
         // setSubmitted(false);
         hideModal();
+        // setSubmitted(false);
+        setleaveType('');
+        setfromDate(null);
+        settoDate(null);
+        sethalfDay('');
+        setReason('');
+        setTotalDays(0);
+        setAvailableLeaves(0);
     }
 
     const handleOpenModal = () => {
@@ -338,7 +253,7 @@ export const ModalBasicExample: React.FunctionComponent = () => {
 
     return (
         <div>
-            <PrimaryButton onClick={handleOpenModal} text="Request a Leave" />
+            <PrimaryButton className={styles.ApplyLeaveButton} onClick={handleOpenModal} text="Apply Leave" />
             <Modal
                 titleAriaId={titleId}
                 isOpen={isModalOpen}
@@ -354,7 +269,7 @@ export const ModalBasicExample: React.FunctionComponent = () => {
                         styles={iconButtonStyles}
                         iconProps={cancelIcon}
                         ariaLabel="Close popup modal"
-                        onClick={hideModal}
+                        onClick={handleCloseModal}
                     />
                 </div>
                 <div className={contentStyles.body}>
@@ -411,10 +326,7 @@ export const ModalBasicExample: React.FunctionComponent = () => {
 
                                 <div>
                                     {fromDate && toDate && fromDate.toDateString() === toDate.toDateString() && (
-                                        <div>
-                                            {/* <input type="checkbox" value={halfDay} onChange={(event) => sethalfDay(event.target.value)} />
-                                    Half-day leave */}
-
+                                        <div>                            
                                             <label className={styles.label}>Half Day</label>
                                             <select className={styles.customizedInput} value={halfDay} onChange={(event) => sethalfDay(event.target.value)} >
                                                 <option value="">--Select Half Day--</option>
@@ -429,7 +341,7 @@ export const ModalBasicExample: React.FunctionComponent = () => {
 
                                 <div>
                                     <label className={styles.label}>Reason</label>
-                                    <textarea className={styles.customizedInput} required value={reason} onChange={e => setReason(e.target.value)} id="w3review" name="w3review" />
+                                    <textarea className={styles.customizedInput} style={{ resize: "none", height: "100px" }} required value={reason} onChange={e => setReason(e.target.value)} id="w3review" name="w3review" />
                                 </div>
 
                                 <br />
@@ -451,7 +363,7 @@ export const ModalBasicExample: React.FunctionComponent = () => {
                                 <div className={styles.submissionButton}>
                                     {errorMessage && <div className={styles['error-message']} style={{ color: 'red', fontSize: '16px', marginBottom: '16px' }}>{errorMessage}</div>}
                                     {/* <button className={styles.submissionButton} disabled={isDisabled} type="submit">Submit</button> */}
-                                    <PrimaryButton className={styles.submissionButton1} type='submit' text="Submit" style={{ textAlign: 'center'  }} disabled={isDisabled} />
+                                    <PrimaryButton className={styles.submissionButton1} type='submit' text="Submit" style={{ textAlign: 'center' }} disabled={isDisabled} />
                                     {/* {submitted && message && <div className={styles.OnSubmitMessage}>{message}</div>} */}
                                 </div>
                             </div>
@@ -469,5 +381,4 @@ export const ModalBasicExample: React.FunctionComponent = () => {
         </div >
     );
 };
-
 

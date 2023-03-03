@@ -77,11 +77,11 @@
 
 .flex2 {
   display: flex;
-  gap: 199px;
+  justify-content: space-between;
   padding: 15px;
-  color: #333333;
-  box-shadow: 0 0px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
+  color: #333;
   align-items: center;
+  border-bottom: 2px solid #e6e6e6;
 }
 
 @media screen and (max-width: 768px) {
@@ -102,66 +102,6 @@
   font-weight: 700;
   text-align: center;
   font-size: 16px;
-}
-
-.circle-wrap {
-  margin: 25px auto;
-  width: 150px;
-  height: 120px;
-  background: #fefcff;
-  border-radius: 50%;
-  // border: 1px solid #cdcbd0;
-}
-
-.circle-wrap .circle .mask,
-.circle-wrap .circle .fill {
-  width: 150px;
-  height: 150px;
-  position: absolute;
-  border-radius: 50%;
-}
-
-.circle-wrap .circle .mask {
-  clip: rect(0px, 150px, 150px, 75px);
-}
-
-.circle-wrap .inside-circle {
-  width: 122px;
-  height: 122px;
-  border-radius: 50%;
-  background: #d2eaf1;
-  line-height: 120px;
-  text-align: center;
-  margin-top: 14px;
-  margin-left: 14px;
-  color: #1e51dc;
-  position: absolute;
-  z-index: 100;
-  font-weight: 700;
-  font-size: 4em;
-}
-
-/* color animation */
-
-/* 3rd progress bar */
-.mask .fill {
-  clip: rect(0px, 75px, 150px, 0px);
-  background-color: #227ded;
-}
-
-.mask-full,
-.circle .fill {
-  animation: fill ease-in-out 3s;
-  transform: rotate(135deg);
-}
-
-@keyframes fill {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(135deg);
-  }
 }
 
 .LeaveButton {
@@ -186,7 +126,7 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
-  border-top: white;
+  // border-top: white;
 }
 
 .label {
@@ -270,4 +210,82 @@
   border: 1px solid #fcc2c3;
   float: left;
   padding: 6px 30px;
+}
+
+// .ProgressBarWidth {
+//   width: 30%;
+//   box-shadow: 0 4px 4px 0 rgb(0 0 0 / 20%), 0 25px 50px 0 rgb(0 0 0 / 10%);
+//   padding: 12px;s
+//   /* border: 1px solid; */
+//   border-radius: 3%;
+//   background-color: #f5f5f5;
+// }
+
+.MainDiv {
+  box-shadow: 0 0 4px 0 rgb(0 0 0 / 20%), 0 0px 10px 0 rgb(0 0 0 / 10%);
+  border-radius: 6px;
+}
+
+.ProgressBarMainDiv {
+  // display: flex;
+  // box-shadow: 0px 0px 10px rgb(0 0 0 / 10%);
+  // padding: 14px;
+  // margin: auto;
+}
+
+.ProgressBarChildern {
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: #f5f5f5;
+  border-radius: 15px;
+}
+
+.ProgressBarChildern,
+.ProgressBarMainDiv {
+  display: flex;
+  padding: 14px;
+  margin: auto;
+}
+
+.ProgressBarChildernWrapper {
+  width: 100px;
+  height: 100px;
+}
+
+.ProgressBarChildernText {
+  margin-left: 22px;
+  color: #5a5e7c;
+}
+
+.MainText {
+  font-weight: 400;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+@media only screen and (max-width: 1206px) {
+  .ProgressBarMainDiv {
+    flex-direction: column;
+  }
+
+  .ProgressBarChildern {
+    margin-bottom: 20px;
+    flex-direction: column;
+    text-align: -webkit-center;
+  }
+}
+
+.ApplyLeaveButton {
+  background: #00b3c6;
+  border: none;
+  width: 129px;
+  height: 36px;
+  border-radius: 6px;
+}
+
+.CircularProgressbarText {
+  fill: black;
+  font-size: 30px;
+  font-weight: 600;
 }
